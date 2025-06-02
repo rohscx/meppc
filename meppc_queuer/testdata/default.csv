@@ -1,0 +1,3 @@
+Hostname,IP,Monitor,Comment,,
+DNS,8.8.8.8,TRUE,,,
+SANITY CHECK1,apiserver.arista.io,TRUE,,,%
