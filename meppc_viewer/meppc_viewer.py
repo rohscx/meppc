@@ -129,7 +129,7 @@ HTML_TEMPLATE = '''
             case 2: return row.ip;
             case 3: return row.status;
             case 4: return row.ping_time ?? 0;
-            case 6: return row.comment;
+            case 5: return row.comment;
             default: return "";
           }
         };
@@ -189,10 +189,11 @@ HTML_TEMPLATE = '''
   <table>
     <thead>
       <tr>
-        <th onclick="sortTable(0)">Hostname</th>
-        <th onclick="sortTable(1)">IP Address</th>
-        <th onclick="sortTable(2)">Status</th>
-        <th onclick="sortTable(3)">Response Time (ms)</th>
+        <th onclick="sortTable(0)">Index</th>
+        <th onclick="sortTable(1)">Hostname</th>
+        <th onclick="sortTable(2)">IP Address</th>
+        <th onclick="sortTable(3)">Status</th>
+        <th onclick="sortTable(4)">Response Time (ms)</th>
         <th>Timeline</th>
         <th onclick="sortTable(5)">Comment</th>
       </tr>
