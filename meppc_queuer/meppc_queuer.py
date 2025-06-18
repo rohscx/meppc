@@ -5,6 +5,8 @@ import time
 import boto3
 import argparse
 import asyncio
+import ipaddress
+import re
 from ping3 import ping
 from datetime import datetime, timezone
 from dotenv import load_dotenv
@@ -22,7 +24,30 @@ SEND_INTERVAL = 5  # seconds between updates
 # Initialize SQS
 sqs = boto3.client("sqs", region_name=REGION_NAME)
 
+class AddressValidator:
+    def __init__(self):
+        self.counter = 1
+
+    def is_valid_domain(self, domain: str) -> bool:
+        pattern = re.compile(
+            r"^(?!\-)(?:[a-zA-Z0-9\-]{1,63}(?<!\-)\.)+[a-zA-Z]{2,}$"
+        )
+        return bool(pattern.fullmatch(domain))
+
+    def validate_or_generate(self, input_str: str) -> str:
+        try:
+            ipaddress.ip_address(input_str)
+            return input_str
+        except ValueError:
+            if self.is_valid_domain(input_str):
+                return input_str
+            else:
+                generated = f"noAddress{self.counter}.ip"
+                self.counter += 1
+                return generated
+
 def load_csv(file_path):
+    validator = AddressValidator()
     hosts = []
     with open(file_path, newline='') as csvfile:
         reader = csv.reader(csvfile)
@@ -32,7 +57,10 @@ def load_csv(file_path):
                 hostname, ip, monitor = row[0], row[1], row[2].strip().upper()
                 comment = row[3] if len(row) > 3 else ""
                 if hostname and ip and monitor == "TRUE":
-                    hosts.append((hostname, ip, comment))
+                    hosts.append((hostname, validator.validate_or_generate(ip), comment))
+                elif monitor == "FALSE":
+                    hosts.append((hostname, validator.validate_or_generate(ip), f"NOT RESPONDING PRIOR TO START OF CHANGE. {comment}"))
+
     return hosts
 
 def send_to_sqs(hostname, ip, status, ping_time, comment):
