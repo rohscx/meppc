@@ -57,9 +57,9 @@ def load_csv(file_path):
                 hostname, ip, monitor = row[0], row[1], row[2].strip().upper()
                 comment = row[3] if len(row) > 3 else ""
                 if hostname and ip and monitor == "TRUE":
-                    hosts.append((hostname, validator.validate_or_generate(ip), comment))
+                    hosts.append((hostname, validator.validate_or_generate(ip), comment, monitor))
                 elif monitor == "FALSE":
-                    hosts.append((hostname, validator.validate_or_generate(ip), f"NOT RESPONDING PRIOR TO START OF CHANGE. {comment}"))
+                    hosts.append((hostname, validator.validate_or_generate(ip), f"NOT RESPONDING PRIOR TO START OF CHANGE. {comment}", monitor))
 
     return hosts
 
@@ -97,9 +97,9 @@ async def run_collector(hosts):
 
         results = await asyncio.gather(*tasks)
 
-        for (hostname, ip, comment), (status, ping_time) in zip(hosts, results):
+        for (hostname, ip, comment, monitor), (status, ping_time) in zip(hosts, results):
             print(f"[SEND] {ip} - {status} - {ping_time} ms")
-            send_to_sqs(hostname, ip, status, ping_time, comment)
+            send_to_sqs(hostname, ip, status, ping_time, comment, monitor)
 
         await asyncio.sleep(SEND_INTERVAL)
 

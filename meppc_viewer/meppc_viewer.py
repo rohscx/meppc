@@ -38,6 +38,7 @@ def poll_sqs():
                 status = body["status"]
                 ping_time = body["ping_time"]
                 timestamp = body["timestamp"]
+                monitor = body["monitor"]
                 comment = body.get("comment", "")
 
                 # Update memory
@@ -48,6 +49,7 @@ def poll_sqs():
                     "ping_time": ping_time,
                     "timestamp": timestamp,
                     "comment": comment,
+                    "monitor": monitor,
                     "timeline": list(status_history[ip])
                 }
                 status_history[ip].append(status)
@@ -74,6 +76,7 @@ HTML_TEMPLATE = '''
     th { background-color: #f4f4f4; }
     .up { background-color: #c8e6c9; }
     .down { background-color: #ffcdd2; }
+    .monitor { background-color: #d3d3d3; }
     .timestamp { font-weight: bold; text-align: center; margin-bottom: 10px; }
     .row-flash {
         animation: flash 0.5s ease-in-out;
