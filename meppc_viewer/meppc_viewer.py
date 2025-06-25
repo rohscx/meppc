@@ -154,7 +154,7 @@ HTML_TEMPLATE = '''
 
       data.forEach((row, index) => {
         const tr = document.createElement("tr");
-        if (row.monitor === "TRUE") {
+        if (row.monitor === "FALSE") {
             row.status = "monitor";
         }
 
