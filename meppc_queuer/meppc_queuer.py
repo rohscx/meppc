@@ -92,7 +92,7 @@ async def async_ping_host(ip):
 async def run_collector(hosts):
     while True:
         tasks = []
-        for hostname, ip, comment in hosts:
+        for hostname, ip, comment, monitor in hosts:
             tasks.append(asyncio.create_task(async_ping_host(ip)))
 
         results = await asyncio.gather(*tasks)
