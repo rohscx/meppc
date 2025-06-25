@@ -63,14 +63,15 @@ def load_csv(file_path):
 
     return hosts
 
-def send_to_sqs(hostname, ip, status, ping_time, comment):
+def send_to_sqs(hostname, ip, status, ping_time, comment, monitor):
     message = {
         "hostname": hostname,
         "ip": ip,
         "status": status,
         "ping_time": ping_time,
         "timestamp": datetime.now(timezone.utc).isoformat(),
-        "comment": comment
+        "comment": comment,
+        "monitor": monitor
     }
     sqs.send_message(
         QueueUrl=SQS_QUEUE_URL,
