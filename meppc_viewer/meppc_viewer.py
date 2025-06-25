@@ -154,7 +154,11 @@ HTML_TEMPLATE = '''
 
       data.forEach((row, index) => {
         const tr = document.createElement("tr");
-        tr.className = row.status === "Up" ? "up" : "down";
+        if (row.monitor === "TRUE") {
+            row.status = "monitor";
+        }
+
+        tr.className = row.status === "Up" ? "up" : row.status === "monitor" ? "monitor" : "down";
         tr.innerHTML = `
           <td>${index + 1}</td>
           <td>${row.hostname}</td>
