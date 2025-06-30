@@ -81,7 +81,42 @@ HTML_TEMPLATE = '''
     .row-flash {
         animation: flash 0.5s ease-in-out;
     }
-
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 24px;
+      vertical-align: middle;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: .3s;
+      border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px; width: 18px;
+      left: 3px; bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    }
+    input:checked + .slider {
+      background-color: #4CAF50;
+    }
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
     @keyframes flash {
         0%   { opacity: 1; }
         50%  { opacity: 0.3; }
@@ -194,11 +229,14 @@ HTML_TEMPLATE = '''
   <div class="timestamp">Current Time (live): <span id="timestamp"></span></div>
 
   <div style="text-align:center; margin: 10px;">
-    <label>
-      <input type="checkbox" id="hideUnmonitored" onchange="fetchStatus()" checked>
-      Hide rows with monitor = FALSE
+    <label style="font-size:1.1em;">
+      <span style="vertical-align:middle;">Hide rows with monitor = FALSE</span>
+      <label class="switch">
+        <input type="checkbox" id="hideUnmonitored" onchange="fetchStatus()" checked>
+        <span class="slider"></span>
+      </label>
     </label>
-    <button onclick="clearStatus()">Clear Dashboard</button>
+    <button onclick="clearStatus()" style="margin-left:18px;">Clear Dashboard</button>
   </div>
 
 
