@@ -230,18 +230,13 @@ HTML_TEMPLATE = '''
 
   <div style="text-align:center; margin: 10px;">
     <label style="font-size:1.1em;">
-      <span style="vertical-align:middle;">Hide rows with monitor = FALSE</span>
+      <span style="vertical-align:middle;">Hide monitor only rows</span>
       <label class="switch">
         <input type="checkbox" id="hideUnmonitored" onchange="fetchStatus()" checked>
         <span class="slider"></span>
       </label>
     </label>
     <button onclick="clearStatus()" style="margin-left:18px;">Clear Dashboard</button>
-  </div>
-
-
-  <div style="text-align:center; margin: 10px;">
-    <button onclick="clearStatus()">Clear Dashboard</button>
   </div>
 
   <table>
