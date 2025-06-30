@@ -232,7 +232,7 @@ HTML_TEMPLATE = '''
     <label style="font-size:1.1em;">
       <span style="vertical-align:middle;">Hide monitor only rows</span>
       <label class="switch">
-        <input type="checkbox" id="hideUnmonitored" onchange="fetchStatus()" checked>
+        <input type="checkbox" id="hideUnmonitored" onchange="fetchStatus()">
         <span class="slider"></span>
       </label>
     </label>
