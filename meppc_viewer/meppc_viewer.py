@@ -149,15 +149,19 @@ HTML_TEMPLATE = '''
         });
       }
 
+      const hideUnmonitored = document.getElementById("hideUnmonitored")?.checked;
+
       const tbody = document.querySelector("tbody");
       tbody.innerHTML = "";
 
       data.forEach((row, index) => {
-        const tr = document.createElement("tr");
+        if (hideUnmonitored && row.monitor === "FALSE") return; // **Hide unmonitored rows**
+
         if (row.monitor === "FALSE") {
             row.status = "monitor";
         }
 
+        const tr = document.createElement("tr");
         tr.className = row.status === "Up" ? "up" : row.status === "monitor" ? "monitor" : "down";
         tr.innerHTML = `
           <td>${index + 1}</td>
@@ -188,6 +192,15 @@ HTML_TEMPLATE = '''
   <h2 style="text-align:center;">MEPPC Dashboard</h2>
 
   <div class="timestamp">Current Time (live): <span id="timestamp"></span></div>
+
+  <div style="text-align:center; margin: 10px;">
+    <label>
+      <input type="checkbox" id="hideUnmonitored" onchange="fetchStatus()" checked>
+      Hide rows with monitor = FALSE
+    </label>
+    <button onclick="clearStatus()">Clear Dashboard</button>
+  </div>
+
 
   <div style="text-align:center; margin: 10px;">
     <button onclick="clearStatus()">Clear Dashboard</button>
